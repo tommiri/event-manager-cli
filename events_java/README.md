@@ -32,12 +32,24 @@ would mess up the CSV parsing. For example, a line with a description containing
 2010-02-14,personal,"Signed, sealed, and delivered"
 ```
 
+### How to use
+
 To manage the events, the user can use the `list`, `add` and `delete` commands, and their respective options. For
 example, to list all events in the `computing` category, the user could run the program with
 arguments `list --category computing`. To add a new event, the user could run the program with
 arguments `add --date 2023-01-01 --category holiday --description "New Year 2023"`. To see all available options, the
 user can run the program with no arguments or with the `-h` or `--help` flags. The help flags can also be used for
 specific commands to see only their available options.
+
+### Generated documentation
+
+You can use the `javadoc` tool with Maven to generate documentation for the app:
+
+```
+mvn javadoc:javadoc
+```
+
+The documentation is generated in the `apidocs` directory within `target/site`.
 
 ## Run Locally
 
