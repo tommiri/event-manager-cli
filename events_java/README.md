@@ -4,6 +4,35 @@ UNIX-style command-line utility program for managing events stored in a local CS
 program made as the final project for TAMK's Advanced Programming Techniques course. The other version written in C# can
 be found [here](https://github.com/tommiri/event-manager-cli/tree/main/events_cs).
 
+## Installation
+
+Event Manager is written in Java and uses Maven for project management, so you will need to have both installed to
+compile and run the program.
+
+Clone the project
+
+```
+  git clone https://github.com/tommiri/event-manager-cli.git
+```
+
+Go to the project directory
+
+```
+  cd event-manager-cli/events_java
+```
+
+Clean and compile the program using Maven
+
+```
+  mvn clean package
+```
+
+Run the program
+
+```
+  java -jar target/Events.jar
+```
+
 ## Usage/Examples
 
 The program requires a CSV file to read the events to display from. Create the `~/.events` directory if it doesn't
@@ -50,35 +79,6 @@ mvn javadoc:javadoc
 ```
 
 The documentation is generated in the `apidocs` directory within `target/site`.
-
-## Run Locally
-
-Event Manager is written in Java and uses Maven for project management, so you will need to have both installed to
-compile and run the program.
-
-Clone the project
-
-```bash
-  git clone https://github.com/tommiri/event-manager-cli.git
-```
-
-Go to the project directory
-
-```bash
-  cd event-manager-cli
-```
-
-Clean and compile the program using Maven
-
-```bash
-  mvn clean package
-```
-
-Run the program
-
-```bash
-  java --jar target/Events.jar
-```
 
 ## Technologies
 
