@@ -2,7 +2,7 @@
 
 UNIX-style command-line utility program for managing events stored in a local CSV file. This is one version of the
 program made as the final project for TAMK's Advanced Programming Techniques course. The other version written in C# can
-be found [here](https://github.com/tommiri/event-manager-cli/tree/main/events_cs).
+be found [here](https://github.com/tommiri/event-manager-cli/tree/main/Events_CS).
 
 ## Installation
 
