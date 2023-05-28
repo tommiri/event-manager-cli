@@ -12,13 +12,13 @@ build the app.
 Clone the project
 
 ```
-  git clone https://github.com/tommiri/event-manager-cli.git
+git clone https://github.com/tommiri/event-manager-cli.git
 ```
 
 Go to the project directory
 
 ```
-  cd event-manager-cli/events_cs/Events
+cd event-manager-cli/events_cs/Events.Cli
 ```
 
 ### Building
@@ -29,22 +29,22 @@ The next steps will vary depending on whether you want to install the app global
 
 Pack the project
 ```
-  dotnet pack
+dotnet pack
 ```
 
 Install the tool globally
 ```
-  dotnet tool install --global --add-source ./nupkg/ events.cli
+dotnet tool install --global --add-source ./nupkg/ events.cli
 ```
 
 Run the program from anywhere
 ```
-  events [command] [options]
+events [command] [options]
 ```
 
 If you want to uninstall the tool you can run
 ```
-  dotnet tool uninstall -g events.cli
+dotnet tool uninstall -g events.cli
 ```
 
 #### To build and run the program locally:
@@ -52,13 +52,13 @@ If you want to uninstall the tool you can run
 Build the project using .NET
 
 ```
-  dotnet build
+dotnet build
 ```
 
 Run the program
 
 ```
-  dotnet bin/Debug/net7.0/Events.Cli.dll [command] [options]
+dotnet bin/Debug/net7.0/Events.Cli.dll [command] [options]
 ```
 
 ## Usage/Examples
