@@ -2,20 +2,23 @@
 
 namespace Events.Commands.Options;
 
+/// <summary>
+/// Command for listing events
+/// </summary>
 [Verb("list", HelpText = "List events")]
 public class ListOptions
 {
-    [Option('t', "today", HelpText = "List events happening today")]
+    [Option('t', "today", HelpText = "List events happening today", SetName = "today")]
     public bool Today { get; set; }
+
+    [Option('D', "date", HelpText = "List events on specified date")]
+    public DateOnly? Date { get; set; }
 
     [Option('b', "before-date", HelpText = "List events before specified date")]
     public DateOnly? BeforeDate { get; set; }
 
     [Option('a', "after-date", HelpText = "List events after specified date")]
     public DateOnly? AfterDate { get; set; }
-
-    [Option('D', "date", HelpText = "List events on specified date")]
-    public DateOnly? Date { get; set; }
 
     [Option('c', "categories", HelpText = "List events from specified categories")]
     public IEnumerable<string>? Categories { get; set; }

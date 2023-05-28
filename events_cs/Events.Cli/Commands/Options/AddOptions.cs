@@ -1,13 +1,15 @@
-﻿using CommandLine;
-using CsvHelper.Configuration.Attributes;
+﻿namespace Events.Commands.Options;
 
-namespace Events.Commands.Options;
+using CommandLine;
 
+/// <summary>
+/// Command for adding events
+/// </summary>
 [Verb("add", HelpText = "Add new events")]
 public class AddOptions
 {
     [Option('D', "date", HelpText = "Specify date for new event")]
-    public DateOnly? Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+    public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
     [Option('c', "category", HelpText = "Specify category for new event")]
     public string? Category { get; set; }

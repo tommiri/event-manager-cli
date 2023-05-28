@@ -26,7 +26,7 @@ public class EventManager
     /// Creates the instance if it does not already exist.
     /// </summary>
     /// <returns>the instance</returns>
-    public static EventManager? GetInstance()
+    public static EventManager GetInstance()
     {
         return _instance ??= new EventManager();
     }
@@ -54,43 +54,41 @@ public class EventManager
     /// <summary>
     /// Get the path to the user's events.csv file
     /// </summary>
-    /// <returns>the path if found, otherwise null</returns>
-    public string? GetEventsPath()
+    /// <returns>the path if found</returns>
+    private string GetEventsPath()
     {
         var userHomeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         if (string.IsNullOrEmpty(userHomeDirectory))
         {
             Console.Error.WriteLine("Unable to determine user home directory");
-            return null;
+            Environment.Exit(-1);
         }
 
         var eventsDir = Path.GetFullPath($"{userHomeDirectory}/.events");
         if (!Directory.Exists(eventsDir))
         {
             Console.Error.WriteLine($"{eventsDir} directory does not exist, please create it.");
-            return null;
+            Environment.Exit(-1);
         }
 
         var eventsPath = Path.Combine(eventsDir, "events.csv");
         if (!File.Exists(eventsPath))
         {
             Console.Error.WriteLine($"{eventsPath} file not found!");
-            return null;
+            Environment.Exit(-1);
         }
 
         return eventsPath;
     }
 
     /// <summary>
-    /// Loads the events from the file given in eventsPath
+    /// Loads the events from file
     /// </summary>
-    /// <param name="eventsPath">the path to the events.csv file</param>
-    /// <returns>true is successful, otherwise false</returns>
-    public bool LoadEvents(string? eventsPath)
+    public void LoadEvents()
     {
         try
         {
-            using var reader = new StreamReader(eventsPath);
+            using var reader = new StreamReader(GetEventsPath());
             using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
 
             var newEvents = csv.GetRecords<Event>().ToList();
@@ -98,23 +96,20 @@ public class EventManager
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e.InnerException is not null ? $"Error: {e.InnerException.Message}" : e.Message);
-            return false;
+            Console.Error.WriteLine("ERROR: Failed to load events!");
+            Console.Error.WriteLine(e.InnerException is not null ? e.InnerException.Message : e.Message);
+            Environment.Exit(-1);
         }
-
-        return true;
     }
 
     /// <summary>
-    /// Save the events to the file at `eventsPath`
+    /// Save the events to file
     /// </summary>
-    /// <param name="eventsPath">the path to the events.csv file</param>
-    /// <returns>true if successful, otherwise false</returns>
-    public bool SaveEvents(string? eventsPath)
+    private void SaveEvents()
     {
         // If there are no events, there is nothing to save,
         // but it can still be considered a success.
-        if (!Events.Any()) return true;
+        if (!Events.Any()) return;
 
         // Sort events on save so added or deleted events don't 
         // just get appended to the end
@@ -122,18 +117,43 @@ public class EventManager
 
         try
         {
-            using var writer = new StreamWriter(eventsPath);
+            using var writer = new StreamWriter(GetEventsPath());
             using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            // Force ISO 8601 format for dates
+            csv.Context.TypeConverterOptionsCache.GetOptions<DateOnly>().Formats = new[] { "o" };
 
             csv.WriteRecords(Events);
             csv.Flush();
         }
         catch (Exception e)
         {
-            Console.Error.WriteLine(e.InnerException is not null ? $"Error: {e.InnerException.Message}" : e.Message);
-            return false;
+            Console.Error.WriteLine("ERROR: Failed to save events to file!");
+            Console.Error.WriteLine(e.InnerException is not null ? e.InnerException.Message : e.Message);
+            Environment.Exit(-1);
         }
+    }
 
-        return true;
+    /// <summary>
+    /// Insert new event into existing event list
+    /// </summary>
+    /// <param name="e">event to insert</param>
+    public void InsertEvent(Event e)
+    {
+        Events.Add(e);
+        SaveEvents();
+        Console.WriteLine("Successfully added new event!");
+    }
+
+    /// <summary>
+    /// Replace existing events with given events
+    /// </summary>
+    /// <param name="events">events to replace existing events with</param>
+    public void ReplaceEvents(List<Event> events)
+    {
+        var previousSize = Events.Count;
+
+        Events = events;
+        SaveEvents();
+        Console.WriteLine(previousSize == events.Count ? "No events affected!" : "Successfully removed event(s)!");
     }
 }
